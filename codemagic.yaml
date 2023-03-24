@@ -1,3 +1,5 @@
-git add codemagic.yaml
-git commit -m 'Bargains'
-git push
+workflows:
+    sample-workflow:
+        name: Bargains
+        max_build_duration: 120
+        instance_type: mac_mini_m1
