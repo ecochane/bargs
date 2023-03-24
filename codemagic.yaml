@@ -1,5 +1,55 @@
 workflows:
-    sample-workflow:
+    ios-workflow:
         name: Bargains
         max_build_duration: 120
         instance_type: mac_mini_m1
+        integrations:
+            app_store_connect: bargains
+        environment:
+            ios_signing:
+            distribution_type: app_store 
+            bundle_identifier: com.bargainsng.bargains
+            vars:
+                APP_ID: 641d6b263bc8f84ad3fdce50
+            integrations:
+                app_store_connect: <App Store Connect API key name>
+    
+            
+            
+            
+        scripts:
+           - name: bargains
+           script: xcode-project use-profiles
+           
+           
+        ios-native:
+  environment:
+    vars:
+      BUNDLE_ID: "com.bargainsng.bargains"
+      XCODE_WORKSPACE: "CodemagicSample.xcworkspace" # <-- Name of your Xcode workspace
+      XCODE_SCHEME: "CodemagicSample" # <-- Name of your Xcode scheme
+scripts:
+  # ...
+  - name: Build ipa for distribution
+    script: | 
+      xcode-project build-ipa \
+        --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE" \
+        --scheme "$XCODE_SCHEME"
+artifacts:
+  - build/ios/ipa/*.ipa
+  - /tmp/xcodebuild_logs/*.log
+  - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+  - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+  
+  
+  
+  scripts:
+      - name: Increment build number
+        script: | 
+          #!/bin/sh
+          cd $CM_BUILD_DIR
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_ID")
+          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+      - name: Build ipa for distribution
+      script: | 
+        # build command
