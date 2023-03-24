@@ -11,8 +11,8 @@ workflows:
         bundle_identifier: com.bargainsng.bargains
       vars:
         BUNDLE_ID: "com.bargainsng.bargains"
-        XCODE_WORKSPACE: "bargains" # <-- Put the name of your Xcode workspace here
-        XCODE_SCHEME: "bargains" # <-- Put the name of your Xcode scheme here
+        XCODE_WORKSPACE: "BargainsNG" # <-- Put the name of your Xcode workspace here
+        XCODE_SCHEME: "BargainsNG" # <-- Put the name of your Xcode scheme here
         APP_ID: 6446066165
       xcode: latest
       cocoapods: default
